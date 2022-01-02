@@ -13,21 +13,17 @@ class TransactionsPage {
   constructor( element ) {
     if (!element) {
       throw new Error('ошибка');
-    } else {
-      this.element = element;
-      this.registerEvents();
     }
+    this.element = element;
+    this.registerEvents();
+    this.lastOptions = null;
   }
 
   /**
    * Вызывает метод render для отрисовки страницы
    * */
   update() {
-    if (this.lastOptions) {
-      this.render(this.lastOptions);
-    } else {
-      this.render();
-    }
+    this.render(this.lastOptions);
   }
 
   /**
@@ -42,10 +38,8 @@ class TransactionsPage {
         this.removeAccount();
       }
       if (event.target.closest('.transaction__remove')) {
-        this.removeTransaction(event.target.dataset.id);
-        event.preventDefault();
+        this.removeTransaction({id: event.target.closest('button').id});
       }
-      event.preventDefault();
     });
   }
 
@@ -62,8 +56,9 @@ class TransactionsPage {
     if (this.lastOptions) {
       const removeMessage = confirm('Вы действительно хотите удалить счёт?');
       if (removeMessage) {
-        Account.remove(this.lastOptions.account_id, (err,response) => {
+        Account.remove({id: this.lastOptions.account_id}, (err,response) => {
           if (response.success) {
+            this.clear();
             App.updateWidgets();
           }
         });
@@ -103,7 +98,8 @@ class TransactionsPage {
         }
       })
       Transaction.list(options, (err, response) => {
-        if (response.success) {
+        if (response) {
+          console.log(response)
           this.renderTransactions(response.data);
         }
       })
@@ -117,7 +113,7 @@ class TransactionsPage {
    * */
   clear() {
     this.renderTransactions([]);
-    this.renderTitle(`${this.element.name}`);
+    this.renderTitle(`Название счёта`);
     this.lastOptions = null;
   }
 
@@ -170,14 +166,15 @@ class TransactionsPage {
     </div>
     `;
   }
-
   /**
    * Отрисовывает список транзакций на странице
    * используя getTransactionHTML
    * */
   renderTransactions(data){
     const content = document.querySelector('.content');
+    content.innerHTML = '';
     data.forEach(item => {
+      console.log('запись добавлена')
        content.insertAdjacentHTML('afterbegin', this.getTransactionHTML(item));
     });
   }

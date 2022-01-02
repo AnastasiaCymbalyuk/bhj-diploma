@@ -13,11 +13,10 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor(element) {
-    if (element) {
-      this.element = element;
-    } else {
+    if (!element) {
       throw new Error('Ошибка');
     }
+    this.element = element;
     this.registerEvents();
   }
 
@@ -41,11 +40,12 @@ class AsyncForm {
    * */
   getData() {
     const form = new FormData(this.element);
-    const newForm = new FormData();
-    for (const item of form.entries()) {
-      newForm.append(item[0], item[1]);
-    };
-    return newForm;
+    const entries = form.entries();
+    let obj = {};
+    for (let item of entries) {
+      obj[item[0]] = item[1];
+    }
+    return obj;
   }
 
   onSubmit(options){

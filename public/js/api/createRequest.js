@@ -5,27 +5,29 @@
 const createRequest = (options = {}) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    try {
-        if (options.method === 'GET') {
-            xhr.open(`${options.method}`, `${options.url}?mail=${options.data.email}&password=${options.data.password}`);
-            xhr.send(options.data);
-        } else {
-            const formData = new FormData;
-            formData.append('mail', `${options.data.mail}`);
-            formData.append('password', `${options.data.password}`);
-            xhr.open(`${options.method}`, `${options.url}`);
-            xhr.send(formData);
+    let result = '';
+    let formData = null;
+    xhr.withCredentials = true;
+    if (options.method === 'GET') {
+        if (options.data) {
+            let result = `?`;
+            for (let key in options.data) {
+                result += `${key}=${options.data[key]}&`;
+            };
         };
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                options.callback(null, xhr.response);
-            }
-        }    
-    } catch (error) {
-        xhr.onerror = function() {
-            if (xhr.status != 200) {
-                options.callback(xhr.statusText);
-            }
-        };
+    } else {
+        formData = new FormData();
+        for (let key in options.data) {
+            formData.append(key, options.data[key]);
+        };  
     };
+    try {
+        xhr.open(`${options.method}`, `${options.url}${result}`);
+        xhr.send(formData);
+    } catch (err) {
+        options.callback(err);
+    }
+    xhr.onload = function() {
+        options.callback(null, xhr.response);
+    }    
 };

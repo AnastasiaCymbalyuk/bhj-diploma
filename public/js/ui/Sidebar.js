@@ -35,19 +35,17 @@ class Sidebar {
    * */
   static initAuthLinks() {
     const menuRegister = document.querySelector('.menu-item_register');
-    const register = App.getModal('register');
 
     const menuLogin = document.querySelector('.menu-item_login');
-    const login = App.getModal('login');
 
     const menuLogout = document.querySelector('.menu-item_logout');
 
     menuRegister.addEventListener('click', () => {
-      register.open();
+      App.getModal('register').open();
     });
 
     menuLogin.addEventListener('click', () => {
-      login.open();
+      App.getModal('login').open();
     });
 
     menuLogout.addEventListener('click', () => {
