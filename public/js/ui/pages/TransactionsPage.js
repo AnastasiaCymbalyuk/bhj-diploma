@@ -38,7 +38,7 @@ class TransactionsPage {
         this.removeAccount();
       }
       if (event.target.closest('.transaction__remove')) {
-        this.removeTransaction({id: event.target.closest('button').id});
+        this.removeTransaction({id: event.target.closest('button').dataset.id});
       }
     });
   }
@@ -99,7 +99,6 @@ class TransactionsPage {
       })
       Transaction.list(options, (err, response) => {
         if (response) {
-          console.log(response)
           this.renderTransactions(response.data);
         }
       })
@@ -174,7 +173,6 @@ class TransactionsPage {
     const content = document.querySelector('.content');
     content.innerHTML = '';
     data.forEach(item => {
-      console.log('запись добавлена')
        content.insertAdjacentHTML('afterbegin', this.getTransactionHTML(item));
     });
   }

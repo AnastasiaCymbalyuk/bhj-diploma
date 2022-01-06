@@ -10,7 +10,7 @@ const createRequest = (options = {}) => {
     xhr.withCredentials = true;
     if (options.method === 'GET') {
         if (options.data) {
-            let result = `?`;
+            result = `?`;
             for (let key in options.data) {
                 result += `${key}=${options.data[key]}&`;
             };

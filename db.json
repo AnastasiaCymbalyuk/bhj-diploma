@@ -49,15 +49,6 @@
       "account_id": "73zzwz58okxpob0zf",
       "user_id": "73zzwzbc4kxoggg1a",
       "created_at": "2021-12-30T10:34:35.494Z"
-    },
-    {
-      "id": "73zzwz7vkkxstz8bb",
-      "type": "expense",
-      "name": "test",
-      "sum": 38,
-      "account_id": "73zzwz58okxpob0zf",
-      "user_id": "73zzwzbc4kxoggg1a",
-      "created_at": "2021-12-30T10:35:04.534Z"
     }
   ]
 }
